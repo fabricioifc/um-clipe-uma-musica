@@ -1,5 +1,5 @@
 <template>
-  <div v-if="readyData === true" class="game">
+  <div v-if="clip.length" class="game">
     <audio src=""></audio>
     <div class="player">
       <video :src="clip[0].url" autoplay muted loop></video>
@@ -42,28 +42,38 @@ export default {
       currentIndex: 0
     };
   },
-  mounted() {
+  async mounted() {
     this.loadList();
     this.loadClip();
-    this.readyData = true
+    // this.readyData = true
   },
   methods: {
-    loadList() {
+    async loadList() {
       const url = "/musics";
-      api
-        .get(url)
-        .then((response) => {
-          this.list = response.data;
-        })
+      const response = await api.get(url);
+      this.list = response.data;
     },
-    loadClip() {
+    async loadClip() {
       const url = "/clips";
-      api
-        .get(url)
-        .then((response) => {
-          this.clip = response.data;
-        })
+      const response = await api.get(url);
+      this.clip = response.data;
     },
+    // loadList() {
+    //   const url = "/musics";
+    //   api
+    //     .get(url)
+    //     .then((response) => {
+    //       this.list = response.data;
+    //     })
+    // },
+    // loadClip() {
+    //   const url = "/clips";
+    //   api
+    //     .get(url)
+    //     .then((response) => {
+    //       this.clip = response.data;
+    //     })
+    // },
     updateTextAndShowOff(newText) {
         this.text = newText
         this.show = false
